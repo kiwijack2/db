@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>SQL запросы.</title>
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/db/css/main.css">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,900,400italic%7CSignika:700,300,400,600' rel='stylesheet' type='text/css'>
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/db">Главная</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+
+    <!-- Nav links -->
+	  <a href="https://github.com/korolr">Загрузка</a>
+<a href="https://github.com/korolr">Проект на  Github</a>
+
+
+	</div>
+
+  <!-- Nav footer -->
+	
+	  <footer>
+
+	<span>Версия 1.1.0</span>
+
+</footer>
+
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header">
+	<a href="/db">
+		<img src="/db/img/emerald.svg" alt="Emerald Logo">
+	  <h1>Основы проектирования бд</h1>
+	</a>
+</header>
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>SQL запросы.</h2>		
+	<time datetime="2015-02-15T00:00:00+04:00" class="by-line">15 Feb 2015</time>
+	<div class="content">
+
+		<p>SQL запросы.</p>
+
+<ul>
+  <li>.Общий вид:</li>
+</ul>
+
+<p>SELECT  желательные атрибуты</p>
+
+<p>FROM переменные-кортежи</p>
+
+<p>WHERE условие на переменные-кортежи ;</p>
+
+<p>В примерах будут использоваться соотношения со следующей структурой:</p>
+
+<p>Beers(name, manf)</p>
+
+<p>Bars(name, addr, license)</p>
+
+<p>Drinkers(name, addr, phone)</p>
+
+<p>Likes(drinker, beer)</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>Frequents(drinker, bar)</p>
+
+<p>Пример.</p>
+
+<p>Какой сорт пива производится Anheuser-Busch?</p>
+
+<p>Beers(name, manf)</p>
+
+<p>SELECT name</p>
+
+<p>FROM Beers</p>
+
+<p>WHERE manf = 'Anheuser-Busch';</p>
+
+<ul>
+  <li>.Замечание: строка заключается в одиночные кавычки.</li>
+</ul>
+
+<p>Name</p>
+
+<p>Bud</p>
+
+<p>Bud Lite</p>
+
+<p>Michelob</p>
+
+<p>Формальная семантика SQL однотабличного запроса.</p>
+
+<ol>
+  <li>Начать с отношения в опции FROM.</li>
+  <li>Применить , используя условия в опции WHERE (получая в результате набор).</li>
+  <li>Применить (расширенный оператор) , используя условия в опции SELECT (получая в результате набор) .</li>
+</ol>
+
+<p>Эквивалентная операционная семантика.</p>
+
+<p>Пусть есть переменная-кортеж для обозначения всех кортежей отношения.  Для каждого кортежа:</p>
+
+<ul>
+  <li>.Проверить выполняются ли условия в опции WHERE.</li>
+  <li>.Если да, то вывести значения условий в SELECT.</li>
+</ul>
+
+<h1 id="звездочка-для-задания-всех-атрибутов">«Звездочка» для задания всех атрибутов.</h1>
+
+<p>Beers(name, manf)</p>
+
+<p>SELECT *</p>
+
+<p>FROM Beers</p>
+
+<p>WHERE manf = 'Anheuser-Busch';</p>
+
+<p>name          manf</p>
+
+<h2 id="bud-------------anheuser-busch">Bud             Anheuser-Busch</h2>
+
+<p>Bud Lite      Anheuser-Busch</p>
+
+<p>Michelob     Anheuser-Busch</p>
+
+<p><strong>Переименование</strong>** столбцов <strong>**.</strong></p>
+
+<p>Beers(name, manf)</p>
+
+<p>SELECT name AS beer</p>
+
+<p>FROM Beers</p>
+
+<p>WHERE manf = 'Anheuser-Busch';</p>
+
+<p>Beer</p>
+
+<p>Bud</p>
+
+<p>Bud Lite</p>
+
+<p>Michelob</p>
+
+<h1 id="выражение-в-качестве-значения-столбца">Выражение в качестве значения столбца.</h1>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT bar, beer,</p>
+
+<p>price*120 AS priceInYen</p>
+
+<p>FROM Sells;</p>
+
+<p>bar       beer      priceInYen</p>
+
+<p>Joe's    Bud       300</p>
+
+<p>Sue's   Miller     360</p>
+
+<ul>
+  <li>
+    <p>.Замечание: допустимо, что в опции WHERE нет условий (опция отсутствует).</p>
+  </li>
+  <li>
+    <p>.Маленькая хитрость: если хотите получить результат с одинаковой символьной строкой в качестве значений строк отношения, то используйте эту строку как константу в выражении:</p>
+  </li>
+</ul>
+
+<p>Likes(drinker, beer)</p>
+
+<p>SELECT drinker,</p>
+
+<p>'likes Bud' AS whoLikesBud</p>
+
+<p>FROM Likes</p>
+
+<p>WHERE beer = 'Bud';</p>
+
+<p>drinker     whoLikesBud</p>
+
+<p>Sally         likes Bud</p>
+
+<p>Fred          likes Bud</p>
+
+<p><strong>Пример.</strong> Найти цену в Joe's Bar за сорт Bud.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT price</p>
+
+<p>FROM Sells</p>
+
+<h1 id="where-bar--joes-bar-and-beer--bud">WHERE bar = 'Joe''s Bar' AND beer = 'Bud';</h1>
+
+<ul>
+  <li>.Замечание: двумя одиночными кавычками в символьной строке обозначается одна кавычка.</li>
+  <li>.В условии опции WHERE могут использоваться логические операторы AND, OR, NOT и скобки для изменения порядка.</li>
+  <li>.Запомните: SQL не является чувствительным к регистру. Ключевые слова, например SELECT или AND, могут записываться как заглавными, так и строчными буквами.</li>
+  <li>.Внутри кавычек строка размещается с учетом регистра.</li>
+</ul>
+
+<p>Шаблоны.</p>
+
+<ul>
+  <li>.%  замешает любую строку.</li>
+  <li>._   замещает один символ строки.</li>
+  <li>.«Атрибут LIKE шаблон" – это условие, которое является истинным, если строковое значение атрибута соответствует шаблону.</li>
+  <li>.NOT LIKE используется для отрицания.</li>
+</ul>
+
+<p>Пример.</p>
+
+<p>Найти посетителей, чьи номера телефонов содержат 555 в качестве первых трех цифр городского номера.</p>
+
+<p>Drinkers(name, addr, phone)</p>
+
+<p>SELECT name</p>
+
+<p>FROM Drinkers</p>
+
+<p>WHERE phone LIKE '%555-_ _ _ _ ';</p>
+
+<ul>
+  <li>.Замечание: шаблоны заключаются в кавычки, как строки.</li>
+</ul>
+
+<p><strong>Пустые указатели (NULL).</strong></p>
+
+<p>Вместо значения в компоненте кортежа.</p>
+
+<ul>
+  <li>.Интерпретация - не точно «отсутствие значения».</li>
+  <li>.Есть много причин, по которым допускается отсутствие значения. Например, «недопустимое значение».</li>
+</ul>
+
+<p>Сравнение пустых указателей (NULL) и значений.</p>
+
+<ul>
+  <li>.3-е значение истинности UNKNOWN.</li>
+  <li>.Запрос включает в результат только те кортежи, где WHERE-условие -TRUE (UNKNOWN не достаточно).</li>
+</ul>
+
+<p><strong>Пример</strong><strong>.</strong></p>
+
+<p>bar        beer          price</p>
+
+<p>Joe's     bar Bud    NULL</p>
+
+<p>SELECT bar</p>
+
+<p>FROM Sells</p>
+
+<p>WHERE price &lt; 2.00 OR price &gt;= 2.00;</p>
+
+<p>UNKNOWN   OR  UNKNOWN  =  UNKNOWN</p>
+
+<ul>
+  <li>.Joe's Bar не будет включен в результат, даже если WHERE-условие - тавтология.</li>
+</ul>
+
+<p>3-значная логика.</p>
+
+<p>Если истина (TRUE) = 1, ложь (FALSE) = 0 и неизвестное (UNKNOWN) = 1/2.</p>
+
+<p>То:</p>
+
+<ul>
+  <li>.AND = min.</li>
+  <li>.OR = max.</li>
+  <li>.NOT (x) = 1-x.</li>
+</ul>
+
+<p>Нарушение некоторых законов.</p>
+
+<p>Пример: Закон исключения третьего, то есть,</p>
+
+<p>P OR NOT p = TRUE</p>
+
+<ul>
+  <li>.Для 3-значной логики: если p = unknown, то левая сторона = max (1/2, (1-1/2)) = 1/2 1.</li>
+  <li>.Подобно алгебре множеств, нет никакого известного способа, чтобы привести все законы 3-значной логики в соответствие законам для наборов или 2-значной логики, соответственно.</li>
+</ul>
+
+<p>Запросы к нескольким отношениям.</p>
+
+<ul>
+  <li>.Список отношений в опции FROM.</li>
+  <li>.Отношение-точка-атрибут – форма обращения к одинаковым  атрибутам нескольких отношений.</li>
+</ul>
+
+<p><strong>Пример.</strong> Найти сорта пива, которые предпочитают частые посетители бара Joe's Bar.</p>
+
+<p>Likes(drinker, beer)</p>
+
+<p>Frequents(drinker, bar)</p>
+
+<h1 id="select-beer">SELECT beer</h1>
+
+<p>FROM Frequents, Likes</p>
+
+<p>WHERE bar = 'Joe''s Bar'</p>
+
+<p>AND Frequents.drinker = Likes.drinker;</p>
+
+<p>Общая семантика запросов к  нескольким отношениям.</p>
+
+<p>Та же самая, что и для запроса с одним отношением, но в начале выполняется операция произведение (product) для всех отношений, указанных в опции FROM.</p>
+
+<p>Операционная семантика.</p>
+
+<p>Рассмотрим переменную-кортеж для каждого отношения, указанного в опции FROM.</p>
+
+<ul>
+  <li>.Представим, что эти переменные указывают на кортежи в соответствующих отношениях (типа вложенного цикла).</li>
+  <li>
+    <p>.Если текущие значения переменных-кортежей обращают WHERE-условие в истину, то в результат выводятся значения аттрибутов из SELECT.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>              drinker      bar                    drinker       beer
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<p>Sally</p>
+
+<p>l                                                                                          f</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                                                                    Likes
+
+                    Frequents
+</code></pre>
+</div>
+
+<p>Явное использование переменных-кортежей.</p>
+
+<p>Иногда необходимо обратиться к двум или более копиям отношения.</p>
+
+<ul>
+  <li>.Переменные-кортежи используются как псевдонимы отношений.</li>
+</ul>
+
+<p><strong>Пример</strong>. Найти пары сортов пива, изготовленные тем же самым производителем.</p>
+
+<p>Beers(name, manf)</p>
+
+<h1 id="select-b1name-b2name">SELECT b1.name, b2.name</h1>
+
+<p>FROM Beers b1, Beers b2</p>
+
+<p>WHERE b1.manf = b2.manf AND b1.name &lt; b2.name;</p>
+
+<ul>
+  <li>.SQL допускает использование опции AS между отношением и переменной-кортежем, Oracle - нет.</li>
+  <li>.Обратите внимание, что условие b1.name &lt; b2.name необходимо, чтобы  избежать создания пар, подобных (Bud, Bud) и одной и той же пары в различном порядке (Bud, Michelob) и (Michelob, Bud).</li>
+</ul>
+
+<p>Подзапросы.</p>
+
+<p>Результат запроса «SELECT-FROM-WHERE» может использоваться в опции WHERE другого запроса.</p>
+
+<p>Самый простой случай: Подзапрос возвращает один кортеж.</p>
+
+<p>Найти бары, которые продают сорт 'Miller' по той же цене, по которой  бар Joe's Bar продает сорт 'Bud'.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT bar</p>
+
+<p>FROM Sells</p>
+
+<p>WHERE beer = 'Miller'</p>
+
+<p>AND price =  ( SELECT price</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>             FROM Sells
+</code></pre>
+</div>
+
+<h3 id="where-bar--joes-bar">WHERE bar = 'Joe''s Bar'</h3>
+
+<h3 id="and-beer--bud">AND beer = 'Bud'</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>          );
+</code></pre>
+</div>
+
+<ul>
+  <li>.Обратите внимание на правило области видимости данных: атрибут относится к наиболее близкому вложенному отношению с этим атрибутом.</li>
+  <li>.Круглые скобки вокруг подзапроса обязательны.</li>
+</ul>
+
+<p><strong>Оператор IN.</strong></p>
+
+<p>«Кортеж IN отношение» - истинно, если кортеж присутствует в отношении.</p>
+
+<p>**Пример.  ** Найти названия и изготовителей сортов, которые предпочитает Fred.</p>
+
+<p>Beers(name, manf)</p>
+
+<p>Likes(drinker, beer)</p>
+
+<p>SELECT *</p>
+
+<p>FROM Beers</p>
+
+<p>WHERE name IN ( SELECT beer</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                    FROM Likes
+
+                    WHERE drinker = &amp;#39;Fred&amp;#39;
+
+                           );
+</code></pre>
+</div>
+
+<ul>
+  <li>.Возможно также использование  NOTIN.</li>
+</ul>
+
+<p>EXISTS.</p>
+
+<p>«EXISTS(отношение)» - истинно, если отношение не пусто.</p>
+
+<h1 id="пример-найти-сорта-пива-которые-являются-уникальными-для-их-производителей"><strong>Пример.</strong> Найти сорта пива, которые являются уникальными для их производителей.</h1>
+
+<p>Beers(name, manf)</p>
+
+<h2 id="selectname">SELECTname</h2>
+
+<p>FROMBeersb1</p>
+
+<p>WHERE NOT EXISTS ( SELECT *</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> FROM Beers
+
+ WHERE manf = b1.manf
+
+ AND name &amp;lt;&amp;gt; b1.name
+
+                           );
+</code></pre>
+</div>
+
+<ul>
+  <li>.Правило области видимости данных: чтобы сослаться к внешнему отношению Beers во вложенном подзапросе, необходимо использовать переменную-кортеж для внешнего отношения, например b1, как в этом примере.</li>
+  <li>.Подзапрос, который  использует значения из внешнего запроса,  называется коррелируемым (зависимым) подзапросом.</li>
+</ul>
+
+<p>Кванторы.</p>
+
+<p>ANY и ALL ведут себя, как квантор существования и квантор всеобщности, соответственно.</p>
+
+<p>Предупреждение: вобычномязыке, «any» и «all» кажутсясинонимами, например, «I am fatter than any of you"  и «I am fatter than all of you."  Но в SQL это не так:</p>
+
+<p><strong>Пример.</strong>  Найти сорт (сорта) пива, имеющие самую высокую цену.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECTbeer</p>
+
+<p>FROMSells</p>
+
+<p>WHERE price &gt;= ALL ( SELECT price</p>
+
+<h3 id="fromsells">FROMSells</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                          );
+</code></pre>
+</div>
+
+<h1 id="задание-в-классе">Задание в классе:</h1>
+
+<p>Найти сорт (сорта) пива,  не имеющие самую низкую цену.</p>
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Пктим</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/db/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>

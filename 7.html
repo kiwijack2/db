@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Объединение, пересечение, разность.</title>
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/db/css/main.css">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,900,400italic%7CSignika:700,300,400,600' rel='stylesheet' type='text/css'>
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/db">Главная</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+
+    <!-- Nav links -->
+	  <a href="https://github.com/korolr">Загрузка</a>
+<a href="https://github.com/korolr">Проект на  Github</a>
+
+
+	</div>
+
+  <!-- Nav footer -->
+	
+	  <footer>
+
+	<span>Версия 1.1.0</span>
+
+</footer>
+
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header">
+	<a href="/db">
+		<img src="/db/img/emerald.svg" alt="Emerald Logo">
+	  <h1>Основы проектирования бд</h1>
+	</a>
+</header>
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>Объединение, пересечение, разность.</h2>		
+	<time datetime="2015-02-15T00:00:00+04:00" class="by-line">15 Feb 2015</time>
+	<div class="content">
+
+		<p>Объединение, пересечение, разность.</p>
+
+<p>«(подзапрос) UNION (подзапрос)» выполняет объединение двух отношений.</p>
+
+<ul>
+  <li>.Аналогично</li>
+</ul>
+
+<p>INTERSECT = пересечению,</p>
+
+<p>EXCEPT = разности.</p>
+
+<ul>
+  <li>.Но в Oracle разность - MINUS, не EXCEPT.</li>
+</ul>
+
+<p><strong>Пример.</strong> Найти посетителей и сорта пива такие, что посетитель предпочитает данный сорт и часто посещает бар, который имеет в продаже этот сорт.</p>
+
+<p>Likes(drinker, beer)</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>Frequents(drinker, bar)</p>
+
+<p>( SELECT * FROM Likes )</p>
+
+<p>INTERSECT</p>
+
+<p>( SELECT drinker, beer</p>
+
+<p>FROM Sells, Frequents</p>
+
+<p>WHERE Frequents.bar = Sells.bar</p>
+
+<p>);</p>
+
+<p>Обеспечение семантики набор/множество.</p>
+
+<ul>
+  <li>
+    <p>.Значение по умолчанию для «SELECT-FROM-WHERE» - набор, значение по умолчанию для объединения, пересечения и разности - множество.</p>
+  </li>
+  <li>
+    <p>.Почему? Экономится время, поскольку при генерации кортежи не сравниваются .</p>
+  </li>
+  <li>
+    <p>.Но необходима сортировка когда выполняется пересечение или (Объединение также отнесено в эту группу)</p>
+  </li>
+  <li>
+    <p>.Семантика множества обеспечивается указанием режима DISTINCT после SELECT.</p>
+  </li>
+  <li>
+    <p>.Убедитесь, что затраты времени оправданы.</p>
+  </li>
+</ul>
+
+<p><strong>Пример.</strong> Найти все различные цены на пиво.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT DISTINCT price</p>
+
+<p>FROM Sells;</p>
+
+<ul>
+  <li>.Семантика набора обеспечивается указанием режима ALL после UNION, INTERSECT, EXCEPT.</li>
+</ul>
+
+<p>Выражения, содержащие соединение (Join).</p>
+
+<p>Существует несколько видов таких выражений.</p>
+
+<ul>
+  <li>
+    <p>.Может использоваться самостоятельно (в «SELECT-FROM-WHERE») или использоваться для определения отношения в опции FROM.</p>
+
+    <p>R CROSS JOIN S</p>
+  </li>
+</ul>
+
+<p>R JOIN S ON условие (например, условие: R.B = S.B)</p>
+
+<p>R NATURAL JOIN S</p>
+
+<p>R OUTER JOIN S</p>
+
+<ul>
+  <li>.Внешнее объединение имеет несколько способов записи:</li>
+</ul>
+
+<ol>
+  <li>
+    <p>Необязательное NATURAL в начале.</p>
+  </li>
+  <li>
+    <p>Необязательное ON условие в конце.</p>
+  </li>
+  <li>
+    <p>Необязательные LEFT, RIGHT или FULL (по умолчанию)  перед OUTER.</p>
+  </li>
+</ol>
+
+<ul>
+  <li>.LEFT = выбирает (включая NULL) «висящие» кортежи только из R, RIGHT = только из S.</li>
+</ul>
+
+<p>Агрегирование.</p>
+
+<p>Sum, avg, min, max, and count применяются к атрибутам/столбцам.</p>
+
+<ul>
+  <li>.Используются в списке, следующем за SELECT.</li>
+</ul>
+
+<p><strong>Пример.</strong> Найти среднюю цену сорта Bud.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECTAVG(price)</p>
+
+<p>FROMSells</p>
+
+<p>WHEREbeer = 'Bud';</p>
+
+<ul>
+  <li>.Каждый кортеж участвует в расчетах один раз (предварительно суммируются цены во всех барах, торгующих сортом Bud).</li>
+</ul>
+
+<p>Задание:</p>
+
+<p>Что делать, если  Sells - множество?</p>
+
+<p>Удаление дубликатов перед агрегированием.</p>
+
+<p>Найти количество различных цен, по которым продается сорт Bud.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT COUNT(DISTINCT price)</p>
+
+<p>FROM Sells</p>
+
+<p>WHERE beer = 'Bud';</p>
+
+<ul>
+  <li>.DISTINCT может использоваться с любой функцией агрегирования, но обычно эта опция используется в сочетании с COUNT.</li>
+</ul>
+
+<p>Группировка.</p>
+
+<p>GROUP BY следует за  конструкцией «SELECT-FROM-WHERE» и имеет список атрибутов.</p>
+
+<ul>
+  <li>.Результат – это отношение, удовлетворяющее условиям в опциях FROM и WHERE и сгруппированное по значениям этих атрибутов, функции агрегирования применяются только внутри группы.</li>
+</ul>
+
+<p><strong>Пример.</strong> Найти среднюю цену, по которой продается каждый сорт.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT beer, AVG(price)</p>
+
+<p>FROM Sells</p>
+
+<p>GROUP BY beer;</p>
+
+<p><strong>Пример.</strong> Найти, для каждого посетителя, среднюю цену сорта Bud в тех барах, где эти посетители являются постоянными посетителями.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>Frequents(drinker, bar)</p>
+
+<p>SELECT drinker, AVG(price)</p>
+
+<h1 id="from-frequents-sells">FROM Frequents, Sells</h1>
+
+<p>WHERE beer = 'Bud'</p>
+
+<p>AND Frequents.bar = Sells.bar</p>
+
+<p>GROUP BY drinker;</p>
+
+<ul>
+  <li>.Замечание: группировка выполняется после операций  x и .</li>
+</ul>
+
+<p><strong>Ограничения на использование функций агрегирования в SELECT.</strong></p>
+
+<p>Если используется любая из функций агрегирования, то каждый элемент списка SELECT должен либо аггрегированным значением, либо присутствовать в опции GROUP BY.</p>
+
+<p><strong>Пример.</strong> Следующий пример мог бы дать ответ на вопрос: найти бар с самым дешевым сортом пива Bud:</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECTbar, MIN(price)</p>
+
+<p>FROMSells</p>
+
+<p>WHEREbeer = 'Bud';</p>
+
+<ul>
+  <li>.Но это недопустимо в SQL.</li>
+</ul>
+
+<p>Задание: Как найти такой бар?</p>
+
+<p>Опция HAVING.</p>
+
+<ul>
+  <li>.Опция HAVING – это выбор из групп, тогда как опция WHERE – выбор из кортежей.</li>
+  <li>
+    <p>.Условие может использовать переменные-кортежи или отношения из опции FROM и их атрибуты, точно так же как и опция WHERE.</p>
+  </li>
+  <li>
+    <p>.Диапазоном является только группа.</p>
+  </li>
+  <li>.Атрибуты лучше выбирать из групп; то есть, они должны присутствовать среди атрибутов GROUP BY.</li>
+</ul>
+
+<p>Пример.</p>
+
+<p>Найти среднюю цену тех сортов пива, которые либо продаются в барах с количеством продаваемых сортов &gt;= 3, либо произведены Anheuser-Busch.</p>
+
+<p>Beers(name, manf)</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>SELECT beer, AVG(price)</p>
+
+<h1 id="from-sells">FROM Sells</h1>
+
+<p>GROUP BY beer</p>
+
+<p>HAVING COUNT(*) &gt;= 3</p>
+
+<p>OR beer IN (  SELECT name</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>          FROM Beers
+
+          WHERE manf = &amp;#39;Anheuser-Busch&amp;#39;
+
+       );
+</code></pre>
+</div>
+
+<h1 id="модификация-баз-данных">Модификация баз данных.</h1>
+
+<p>Модификация = добавление (insert) + удаление (delete) + обновление (update).</p>
+
+<p>Добавление(вставка) кортежа.</p>
+
+<p>INSERT INTO отношение VALUES (список значений).</p>
+
+<ul>
+  <li>
+    <p>.Добавление кортежа = список значений, значения должны соответствовать атрибутам в том порядке, в котором они объявлены в структуре.</p>
+  </li>
+  <li>
+    <p>.Забыли порядок? Перечислите атрибуты в скобках как аргументы отношения.</p>
+  </li>
+</ul>
+
+<p><strong>Пример</strong><strong>.</strong> Likes(drinker, beer). Добавить информацию о том, что  Sally предпочитает Bud.</p>
+
+<p>INSERTINTOLikes(drinker, beer)</p>
+
+<p>VALUES('Sally', 'Bud');</p>
+
+<h1 id="добавление-результата-запроса">Добавление результата запроса.</h1>
+
+<p>INSERT INTO отношение (подзапрос).</p>
+
+<p>Пример:Создать таблицу для всех возможных друзей Sally, т.е. людей, которые являются частыми посетителями баров, в которых частым посетителем является и Sally. Frequents(drinker, bar)</p>
+
+<p>CREATE TABLE PotBuddies( name char(30));</p>
+
+<p>INSERT INTO PotBuddies</p>
+
+<p>(SELECT DISTINCT d2.drinker</p>
+
+<p>FROM Frequents d1, Frequents d2</p>
+
+<p>WHERE d1.drinker = 'Sally'</p>
+
+<p>AND d2.drinker &lt;&gt; 'Sally' AND d1.bar = d2.bar</p>
+
+<p>);</p>
+
+<p>Удаление.</p>
+
+<p>DELETE FROM отношение WHERE условие.</p>
+
+<ul>
+  <li>.Удаляет все кортежи, удовлетворяющие условию, из указанного отношения.</li>
+</ul>
+
+<p><strong>Пример 1.</strong> Sally больше не предпочитает Bud. Likes(drinker, beer)</p>
+
+<p>DELETEFROMLikes</p>
+
+<p>WHEREdrinker = 'Sally' ANDbeer = 'Bud';</p>
+
+<p><strong>Пример 2:</strong> Удалить все кортежи из отношения Likes.</p>
+
+<p>DELETE FROM Likes;</p>
+
+<p><strong>Пример 3.</strong> Удалить сорта пива, у производителя которых есть еще один сорт. Beers(name, manf)</p>
+
+<p>DELETE FROM Beers b</p>
+
+<p>WHERE EXISTS ( SELECT name</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                   FROM Beers
+
+                   WHERE manf = b.manf
+
+                   AND name &amp;lt;&amp;gt; b.name
+
+                );
+</code></pre>
+</div>
+
+<ul>
+  <li>
+    <p>.Замечание: для отношения, из которого удаляется информация, используется переменная-кортеж.</p>
+  </li>
+  <li>
+    <p>.Семантика не очевидна. IfA.B. производит только Bud и BudLite , будет ли BudLite удовлетворять условию после удаления Bud?</p>
+  </li>
+  <li>
+    <p>.Семантика SQL: условия модификации для всех кортежей проверяются системой до начала выполнения команды модификации.</p>
+  </li>
+  <li>
+    <p>.В примере Bud/Budlite, мы сначала проверим все кортежи и пометим оба сорта пива, как подлежащие модификации, а затем оба удалим.</p>
+  </li>
+</ul>
+
+<h1 id="обновление">Обновление.</h1>
+
+<p>UPDATE отношение</p>
+
+<p>SET список значений</p>
+
+<p>WHERE условие.</p>
+
+<p><strong>Пример 1.</strong> Изменить номер телефона посетителя Fred  на значение 555-1212.</p>
+
+<p>Drinkers(name, addr, phone)</p>
+
+<p>UPDATE Drinkers</p>
+
+<p>SET phone = '555-1212'</p>
+
+<p>WHERE name = 'Fred';</p>
+
+<p><strong>Пример 2.</strong>  За один просмотр таблицы установить максимальную цену для всех сортов пива в размере $4.</p>
+
+<p>Sells(bar, beer, price)</p>
+
+<p>UPDATESells</p>
+
+<p>SETprice = 4.00</p>
+
+<p>WHERE price &gt; 4.00;</p>
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Пктим</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/db/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>

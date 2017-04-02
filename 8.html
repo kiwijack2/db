@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Определение схемы (структуры) базы данных.</title>
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/db/css/main.css">
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,900,400italic%7CSignika:700,300,400,600' rel='stylesheet' type='text/css'>
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/db">Главная</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+
+    <!-- Nav links -->
+	  <a href="https://github.com/korolr">Загрузка</a>
+<a href="https://github.com/korolr">Проект на  Github</a>
+
+
+	</div>
+
+  <!-- Nav footer -->
+	
+	  <footer>
+
+	<span>Версия 1.1.0</span>
+
+</footer>
+
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header">
+	<a href="/db">
+		<img src="/db/img/emerald.svg" alt="Emerald Logo">
+	  <h1>Основы проектирования бд</h1>
+	</a>
+</header>
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>Определение схемы (структуры) базы данных.</h2>		
+	<time datetime="2015-02-13T00:00:00+04:00" class="by-line">13 Feb 2015</time>
+	<div class="content">
+
+		<p>Определение схемы (структуры) базы данных.</p>
+
+<p>CREATE TABLE имя (список элементов).</p>
+
+<ul>
+  <li>.Как правило, элементы – это атрибуты и их типы, также можно объявить ключи и ограничения.</li>
+  <li>.Команда CREATE X применяется для других элементов структуры X: представлений (VIEW), индексов (INDEX), утверждений (ASSERTION), триггеров(TRIGGER).</li>
+  <li>.«DROP X имя» удаляет созданный элемент вида X с именем «имя».</li>
+</ul>
+
+<p>Пример.</p>
+
+<h1 id="create-table-sells-">CREATE TABLE Sells (</h1>
+
+<p>bar CHAR(20),</p>
+
+<p>beer VARCHAR(20),</p>
+
+<p>price REAL</p>
+
+<p>);</p>
+
+<p>DROP TABLE Sells;</p>
+
+<h1 id="типы"><strong>Типы</strong><strong>.</strong></h1>
+
+<ol>
+  <li>INT или INTEGER.</li>
+  <li>REAL или FLOAT.</li>
+  <li>CHAR( n ) = строка символов фиксированной длины, дополненная, в случае необходимости справа символом-заполнителем (чаще всего – пробелом).</li>
+  <li>VARCHAR( n ) = строка символов переменной длины, не более n символов.</li>
+</ol>
+
+<ul>
+  <li>
+    <p>.В Oracle используется тип VARCHAR2( n ). Отличие: память под VARCHAR2 имеет переменную длину; VARCHAR хранится в массиве, имеющем ограничивающий символ.</p>
+  </li>
+  <li>
+    <p>.Использовать VARCHAR в Oracle нежелательно (этот тип данных может быть запрещен в будущем); постарайтесь использовать тип VARCHAR2.</p>
+  </li>
+</ul>
+
+<ol>
+  <li>Даты. Форма этого типа в SQL - DATE 'yyyy-mm-dd'</li>
+</ol>
+
+<ul>
+  <li>.В Oracle используются отличные от SQL форматы дат.</li>
+</ul>
+
+<ol>
+  <li>Время. Форма этого типа в SQL - TIME 'hh:mm:ss[.ss…]' .</li>
+  <li>В Oracle: NUMBER – это и целое число, и число с плавающей точкой.</li>
+</ol>
+
+<p>Дата в Oracle по умолчанию.</p>
+
+<p>Формат даты по умолчанию определяется в момент генерации системы и может быть позднее изменен системным администратором для всех или пользователем в пределах сеанса работы, текущий формат - 'dd.mm.yy', например, 09.04.02</p>
+
+<ul>
+  <li>.Величина, хранимая в поле типа DATE, будет иметь точность, которая допустима на компьютере.</li>
+</ul>
+
+<p>Пример:</p>
+
+<p>CREATE TABLE Days (</p>
+
+<p>d DATE</p>
+
+<p>);</p>
+
+<p>INSERT INTO Days VALUES('06.11.97');</p>
+
+<ul>
+  <li>.В Oracle есть функция to_date для преобразования дат в формат по умолчанию.</li>
+</ul>
+
+<h3 id="insert-into-days">INSERT INTO Days</h3>
+
+<p>VALUES(to_date('2000-01-01', 'yyyy-mm-dd'));</p>
+
+<p>Определение ключей.</p>
+
+<p>Используются ключевые слова PRIMARY KEY или UNIQUE.</p>
+
+<ul>
+  <li>.В Oracle эти опции являются синонимами.</li>
+  <li>.В SQL может быть только один первичный ключ, а уникальных - может быть несколько.</li>
+  <li>
+    <p>.SQL разрешает реализациям создавать индекс (для ускорения доступа к данным по ключу) только для опции PRIMARY KEY.</p>
+  </li>
+  <li>
+    <p>.Oracle создает индексы при задании и той и другой опции.</p>
+  </li>
+  <li>.SQL не разрешает оставлять не заполненными значения первичных ключей (NULL), но это допустимо для «уникальных» столбцов (которые могут иметь два или более пустых значения, но не пустые значения не могут повторяться).</li>
+</ul>
+
+<p>Ключи определяются в одном из двух мест:</p>
+
+<ol>
+  <li>После типа атрибута, если этот атрибут представляет собой ключ.</li>
+  <li>Как отдельный элемент.</li>
+</ol>
+
+<ul>
+  <li>.Существенно, если ключ содержит более чем 1 атрибут.</li>
+</ul>
+
+<p><strong>Пример</strong><strong>.</strong></p>
+
+<h1 id="create-table-sells--1">CREATE TABLE Sells (</h1>
+
+<p>bar CHAR(20),</p>
+
+<p>beer VARCHAR(20),</p>
+
+<p>price REAL,</p>
+
+<p>PRIMARY KEY(bar,beer)</p>
+
+<p>);</p>
+
+<p>Другие свойства, которые можно назначать атрибутам.</p>
+
+<ol>
+  <li>NOT NULL = каждый кортеж должен иметь определенное значение для этого атрибута.</li>
+  <li>DEFAULT значение = значение, которое будет присвоено атрибуту, если не какое другое значение.</li>
+</ol>
+
+<p><strong>Пример</strong><strong>.</strong></p>
+
+<p>CREATE TABLE Drinkers (</p>
+
+<p>name  CHAR(30) PRIMARY KEY,</p>
+
+<p>addr   CHAR(50)   DEFAULT '123 Sesame St',</p>
+
+<p>phone CHAR(16)</p>
+
+<p>);</p>
+
+<p>INSERT INTO Drinkers(name)</p>
+
+<p>VALUES('Sally')</p>
+
+<p>В результате выполнения команд получим:</p>
+
+<p>name        addr                       phone</p>
+
+<h4 id="sally---------123-sesame-st-----null">Sally         123 Sesame St.     NULL</h4>
+
+<ul>
+  <li>
+    <p>.Первичный ключ не может принимать значения по умолчанию NULL.</p>
+  </li>
+  <li>
+    <p>.Такое добавление допустимо.</p>
+  </li>
+  <li>
+    <p>.Допускается в INSERT указывать список атрибутов и список соответчтвующих значений.</p>
+  </li>
+  <li>
+    <p>.Если бы в CREATETABLE определили</p>
+
+    <p>phone CHAR(16) NOT NULL</p>
+
+    <p>то такое добавление было бы невозможным.</p>
+  </li>
+</ul>
+
+<h1 id="изменение-столбцов">Изменение столбцов.</h1>
+
+<p>Добавить атрибут к отношению R можно, используя команду:</p>
+
+<p>ALTER TABLE R ADD &lt; описание столбца &gt; ;</p>
+
+<p>Пример:</p>
+
+<p>ALTER TABLE Bars ADD phone CHAR(16)</p>
+
+<p>DEFAULT 'unlisted';</p>
+
+<ul>
+  <li>.Столбец можно удалить.</li>
+</ul>
+
+<p>ALTER TABLE Bars DROP license;</p>
+
+<p><strong>Представления</strong> <strong>(VIEWs)</strong><strong>.</strong></p>
+
+<p>Выражение, которое описывает таблицу, но не создает ее.</p>
+
+<ul>
+  <li>.Представление определяется командой:</li>
+</ul>
+
+<h1 id="create-view--имя--as--запрос--">CREATE VIEW &lt; имя &gt; AS &lt; запрос &gt; ;</h1>
+
+<p>Пример.</p>
+
+<p>Представление CanDrink – это набор пар посетитель-сорт пива (drinker-beer) таких, что посетитель часто посещает бар, предлагающий данный сорт.</p>
+
+<p>CREATE VIEW CanDrink AS</p>
+
+<p>SELECT drinker, beer</p>
+
+<p>FROM Frequents, Sells</p>
+
+<p>WHERE Frequents.bar = Sells.bar;</p>
+
+<p>Запросы к представлениям.</p>
+
+<p>Выборка производится как для обычного отношения.</p>
+
+<p><strong>Пример</strong><strong>.</strong></p>
+
+<p>SELECT beer</p>
+
+<p>FROM CanDrink</p>
+
+<p>WHERE drinker = 'Sally';</p>
+
+<p>Семантика использования представлений.</p>
+
+<p>SQL запрос                         реляционная</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                                         алгебра
+
+
+
+                                                                                      SQL
+</code></pre>
+</div>
+
+<p>SQL определение              реляционная</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    представления           алгебра
+</code></pre>
+</div>
+
+<p><strong>Пример</strong><strong>.</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                      drinker, beer                                              beer
+
+
+
+
+
+                                                                               drinker\_&amp;#39;Sally&amp;#39;
+
+
+
+  Frequents             Sells                                        CanDrink
+
+
+
+           CanDrink                                                     Query
+</code></pre>
+</div>
+
+<h5 id="в-результате-комбинирования-получаем">В результате комбинирования получаем</h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>                                     beer
+
+
+
+                                drinker\_&amp;#39;Sally&amp;#39;
+
+
+
+                                 drinker, beer
+
+
+
+
+
+
+
+                    Frequents             Sells
+</code></pre>
+</div>
+
+<p>Оптимизировать запрос.</p>
+
+<ol>
+  <li>
+    <p>Поместить выбор вниз дерева.</p>
+  </li>
+  <li>
+    <p>Удалить ненужные проекции.</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>                                     beer
+
+
+
+
+
+
+
+                       drinker=&amp;#39;Sally&amp;#39;          Sells
+
+
+
+
+
+                        Frequents
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Пктим</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/db/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Основы проектирования баз данных</title>
+ <link href="https://kiwijack2.github.io/atom.xml" rel="self"/>
+ <id>https://kiwijack2.github.io</id>
+ <updated>2017-04-02T22:52:19+04:00</updated>
+ <author>
+   <name>Jacopo Rabolini</name>
+   <uri>https://kiwijack2.github.io/bd</uri>
+   <email>hello@jacoporabolini.com</email>
+ </author>
+
+ 
+
+ <entry>
+   <title>Объединение, пересечение, разность.</title>
+   <link href="https://kiwijack2.github.io/7"/>
+   <id>https://kiwijack2.github.io/7</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Объединение, пересечение, разность.&lt;/p&gt; &lt;p&gt;«(подзапрос) UNION (подзапрос)» выполняет объединение двух отношений.&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Аналогично&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;INTERSECT = пересечению,&lt;/p&gt; &lt;p&gt;EXCEPT = разности.&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Но в Oracle разность - MINUS, не EXCEPT.&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;&lt;strong&gt;Пример.&lt;/strong&gt; Найти посетителей и сорта пива такие, что посетитель предпочитает данный сорт и часто посещает бар, который имеет в продаже этот...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>SQL запросы.</title>
+   <link href="https://kiwijack2.github.io/6"/>
+   <id>https://kiwijack2.github.io/6</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;SQL запросы.&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Общий вид:&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;SELECT желательные атрибуты&lt;/p&gt; &lt;p&gt;FROM переменные-кортежи&lt;/p&gt; &lt;p&gt;WHERE условие на переменные-кортежи ;&lt;/p&gt; &lt;p&gt;В примерах будут использоваться соотношения со следующей структурой:&lt;/p&gt; &lt;p&gt;Beers(name, manf)&lt;/p&gt; &lt;p&gt;Bars(name, addr, license)&lt;/p&gt; &lt;p&gt;Drinkers(name, addr, phone)&lt;/p&gt; &lt;p&gt;Likes(drinker, beer)&lt;/p&gt; &lt;p&gt;Sells(bar, beer, price)&lt;/p&gt; &lt;p&gt;Frequents(drinker, bar)&lt;/p&gt; &lt;p&gt;Пример.&lt;/p&gt; &lt;p&gt;Какой сорт пива производится Anheuser-Busch?&lt;/p&gt; &lt;p&gt;Beers(name, manf)&lt;/p&gt; &lt;p&gt;SELECT name&lt;/p&gt; &lt;p&gt;FROM...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>Базовая («классическая») алгебра отношений (реляционная алгебра).</title>
+   <link href="https://kiwijack2.github.io/5"/>
+   <id>https://kiwijack2.github.io/5</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Базовая («классическая») алгебра отношений (реляционная алгебра).&lt;/p&gt; &lt;p&gt;Небольшой набор операторов, которые позволяют манипулировать соотношениями и имеют достаточно богатые возможности.&lt;/p&gt; &lt;p&gt;Операторы:&lt;/p&gt; &lt;ol&gt; &lt;li&gt;Объединение, пересечение и разность: Обычный набор операторов над множествами.&lt;/li&gt; &lt;/ol&gt; &lt;ul&gt; &lt;li&gt;.Схемы отношений должен быть одинаковыми.&lt;/li&gt; &lt;/ul&gt; &lt;ol&gt; &lt;li&gt;Выборка: Выбор некоторых строк из отношения.&lt;/li&gt; &lt;li&gt;Проекция: Выбор некоторых столбцов.&lt;/li&gt; &lt;li&gt;Произведение и...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>Реляционная модель.</title>
+   <link href="https://kiwijack2.github.io/4"/>
+   <id>https://kiwijack2.github.io/4</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Нормализация.&lt;/p&gt; &lt;p&gt;Цель = НФБК = Нормальная Форма Бойса-Кодда = все ФЗ следуют из утверждения &quot;ключ -&amp;gt; все&quot;.&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Формально, R находится в НФБК, если для каждой нетривиальной ФЗ R, например X -&amp;gt; A, X -суперключ.&lt;/li&gt; &lt;li&gt;.&quot;Нетривиальная&quot; = правосторонний атрибут не присутствует нигде в левой стороне.&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;Почему?&lt;/p&gt; &lt;ol&gt; &lt;li&gt; &lt;p&gt;Гарантирует...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>Реляционная модель.</title>
+   <link href="https://kiwijack2.github.io/3"/>
+   <id>https://kiwijack2.github.io/3</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Реляционная модель.&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Таблица = отношение.&lt;/li&gt; &lt;li&gt;.Названия столбцов = атрибуты.&lt;/li&gt; &lt;li&gt; &lt;p&gt;.Строка = кортеж&lt;/p&gt; &lt;p&gt;Beers&lt;/p&gt; &lt;/li&gt; &lt;/ul&gt; &lt;p&gt;name manf&lt;/p&gt; &lt;p&gt;WinterBrew Pete's&lt;/p&gt; &lt;p&gt;BudLite A.B.&lt;/p&gt; &lt;p&gt;… …&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Схема отношения = имена столбцов (атрибуты) + другая информация о структуре, например, ключи, другие ограничения. Например: Beers (name, manf).&lt;/li&gt; &lt;li&gt; &lt;p&gt;.Порядок атрибутов произволен, но...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>Слабые сущности.</title>
+   <link href="https://kiwijack2.github.io/2"/>
+   <id>https://kiwijack2.github.io/2</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Слабые сущности.&lt;/p&gt; &lt;p&gt;Иногда, ключ формируется не только из собственных атрибутов объекта, но и из ключей одного или более объектов, связанных с данным как один-ко-многим.&lt;/p&gt; &lt;ul&gt; &lt;li&gt; &lt;p&gt;.Такое множество объектов (сущностей) называется слабым.&lt;/p&gt; &lt;/li&gt; &lt;li&gt; &lt;p&gt;.Слабое множество представляется двойным прямоугольником, двойным ромбом - каждая из связей с другими множествами, ключи которых...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>Что такое СУБД - система управления базой данных</title>
+   <link href="https://kiwijack2.github.io/1"/>
+   <id>https://kiwijack2.github.io/1</id>
+   <updated>2015-02-15T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Что такое СУБД - система управления базой данных&lt;/p&gt; &lt;p&gt;(DBMS - Database Management System )?&lt;/p&gt; &lt;ol&gt; &lt;li&gt;Система, которая предоставляет доступ к данным очень большого объема.&lt;/li&gt; &lt;li&gt;Система, которая поддерживает эффективный (быстрый) доступ к данным.&lt;/li&gt; &lt;li&gt;Система, которая поддерживает доступ к данным одновременно для многих пользователей.&lt;/li&gt; &lt;li&gt;Система, которая поддерживает безопасный и атомарный (неделимый) доступ...</content>
+ </entry>
+
+ 
+
+ <entry>
+   <title>Определение схемы (структуры) базы данных.</title>
+   <link href="https://kiwijack2.github.io/8"/>
+   <id>https://kiwijack2.github.io/8</id>
+   <updated>2015-02-13T00:00:00+04:00</updated>
+   <content type="html">&lt;p&gt;Определение схемы (структуры) базы данных.&lt;/p&gt; &lt;p&gt;CREATE TABLE имя (список элементов).&lt;/p&gt; &lt;ul&gt; &lt;li&gt;.Как правило, элементы – это атрибуты и их типы, также можно объявить ключи и ограничения.&lt;/li&gt; &lt;li&gt;.Команда CREATE X применяется для других элементов структуры X: представлений (VIEW), индексов (INDEX), утверждений (ASSERTION), триггеров(TRIGGER).&lt;/li&gt; &lt;li&gt;.«DROP X имя» удаляет созданный элемент вида X...</content>
+ </entry>
+
+ 
+
+</feed>
